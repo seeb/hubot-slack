@@ -93,9 +93,15 @@ class SlackClient
     options = { as_user: true, link_names: 1, thread_ts: envelope.message?.thread_ts }
 
     if typeof message isnt 'string'
-      @web.chat.postMessage(room, message.text, _.defaults(message, options), cb)
+      if cb is undefined || null
+        @web.chat.postMessage(room, message.text, _.defaults(message, options))
+      else
+        @web.chat.postMessage(room, message.text, _.defaults(message, options), cb)
     else
-      @web.chat.postMessage(room, message, options, cb)
+      if cb is undefined || null
+        @web.chat.postMessage(room, message, options)
+      else
+        @web.chat.postMessage(room, message, options, cb)
 
 
 module.exports = SlackClient

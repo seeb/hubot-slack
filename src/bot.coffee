@@ -118,7 +118,7 @@ class SlackBot extends Adapter
     sent_messages = []
     for message in messages
       if message isnt ''
-        if cb is undefined or cb is null
+        if cb is undefined || cb is null
           sent_messages.push @client.send(envelope, message)
         else
           sent_messages.push @client.send(envelope, message, cb)
@@ -134,7 +134,7 @@ class SlackBot extends Adapter
       if message isnt ''
         message = "<@#{envelope.user.id}>: #{message}" unless envelope.room[0] is 'D'
         @robot.logger.debug "Sending to #{envelope.room}: #{message}"
-        if cb is undefined or cb is null
+        if cb is undefined || cb is null
           sent_messages.push @client.send(envelope, message)
         else
           sent_messages.push @client.send(envelope, message, cb)
