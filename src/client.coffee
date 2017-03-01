@@ -82,7 +82,7 @@ class SlackClient
   ###
   Send a message to Slack using the best client for the message type
   ###
-  send: (envelope, message) ->
+  send: (envelope, message, cb) ->
     if envelope.room
       room = envelope.room
     else if envelope.id #Maybe we were sent a user object or channel object. Use the id, in that case.
@@ -93,9 +93,9 @@ class SlackClient
     options = { as_user: true, link_names: 1, thread_ts: envelope.message?.thread_ts }
 
     if typeof message isnt 'string'
-      @web.chat.postMessage(room, message.text, _.defaults(message, options))
+      @web.chat.postMessage(room, message.text, _.defaults(message, options), cb)
     else
-      @web.chat.postMessage(room, message, options)
+      @web.chat.postMessage(room, message, options, cb)
 
 
 module.exports = SlackClient

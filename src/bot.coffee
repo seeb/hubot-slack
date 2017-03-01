@@ -114,24 +114,30 @@ class SlackBot extends Adapter
   ###
   Hubot is sending a message to Slack
   ###
-  send: (envelope, messages...) ->
+  send: (envelope, messages..., cb) ->
     sent_messages = []
     for message in messages
       if message isnt ''
-        sent_messages.push @client.send(envelope, message)
+        if cb is undefined or cb is null
+          sent_messages.push @client.send(envelope, message)
+        else
+          sent_messages.push @client.send(envelope, message, cb)
     return sent_messages
 
 
   ###
   Hubot is replying to a Slack message
   ###
-  reply: (envelope, messages...) ->
+  reply: (envelope, messages..., cb) ->
     sent_messages = []
     for message in messages
       if message isnt ''
         message = "<@#{envelope.user.id}>: #{message}" unless envelope.room[0] is 'D'
         @robot.logger.debug "Sending to #{envelope.room}: #{message}"
-        sent_messages.push @client.send(envelope, message)
+        if cb is undefined or cb is null
+          sent_messages.push @client.send(envelope, message)
+        else
+          sent_messages.push @client.send(envelope, message, cb)
     return sent_messages
 
 
